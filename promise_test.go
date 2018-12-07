@@ -98,3 +98,19 @@ func TestFailureChaining(t *testing.T) {
 		return nil
 	})
 }
+
+func TestAll(t *testing.T) {
+	p1 := NewPromise(func(resolve ResolveFunc, reject RejectFunc) {
+		resolve(42)
+	})
+	p2 := NewPromise(func(resolve ResolveFunc, reject RejectFunc) {
+		reject(errors.New("Error"))
+	})
+	results := All(p1, p2)
+	if results[0].(int) != 42 {
+		t.Errorf("Expected 42 but got: %v", results[0])
+	}
+	if results[1].(error).Error() != "Error" {
+		t.Errorf("Expected 'Error' but got %v", results[1].(error).Error())
+	}
+}
