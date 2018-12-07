@@ -18,7 +18,6 @@ type RejectFunc func(error) interface{}
 
 type Promise struct {
 	sync.WaitGroup
-	sync.Mutex
 	state state
 	data  interface{}
 	err   error
